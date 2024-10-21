@@ -1,11 +1,15 @@
 from fastapi import FastAPI, HTTPException
 import requests
+from dotenv import load_dotenv
+import os
 
+
+load_dotenv()
 app = FastAPI()
 
 #Api configuration
-AIRTABLE_API_KEY = "patJ4FNwSABL9zMzj.d63d67c8b534f09f5421f1c509911ff23a64fb19432bee889e9537d9ab6230d2"
-BASE_ID = "appjv85O6QXvclMZp"
+AIRTABLE_API_KEY = os.getnv('AIRTABLE_API_KEY')
+BASE_ID = os.getnv('BASE_ID')
 PURCHASE_TABLE_NAME = "Purchase"
 PRODUCT_TABLE_NAME = "Products"
 
