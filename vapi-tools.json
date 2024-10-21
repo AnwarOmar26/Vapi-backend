@@ -1,0 +1,19 @@
+{
+    "functions": [
+      {
+        "name": "checkReturnPossibility",
+        "description": "Checks if the product in the given purchase is eligible for return.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "purchase_id": {
+              "type": "string",
+              "description": "The unique ID of the purchase to check return eligibility."
+            }
+          },
+          "required": ["purchase_id"]
+        }
+      }
+    ]
+  }
+  
