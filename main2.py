@@ -8,8 +8,8 @@ load_dotenv()
 app = FastAPI()
 
 #Api configuration
-AIRTABLE_API_KEY = os.getnv('AIRTABLE_API_KEY')
-BASE_ID = os.getnv('BASE_ID')
+AIRTABLE_API_KEY = os.getenv('AIRTABLE_API_KEY')
+BASE_ID = os.getenv('BASE_ID')
 PURCHASE_TABLE_NAME = "Purchase"
 PRODUCT_TABLE_NAME = "Products"
 
