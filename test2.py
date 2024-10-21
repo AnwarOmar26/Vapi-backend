@@ -1,9 +1,7 @@
 from fastapi import FastAPI, HTTPException
 import requests
 
-app = FastAPI()
-
-#Api configuration
+# Airtable API Configuration
 AIRTABLE_API_KEY = "patJ4FNwSABL9zMzj.d63d67c8b534f09f5421f1c509911ff23a64fb19432bee889e9537d9ab6230d2"
 BASE_ID = "appjv85O6QXvclMZp"
 PURCHASE_TABLE_NAME = "Purchase"
@@ -13,7 +11,6 @@ HEADERS = {
     "Authorization": f"Bearer {AIRTABLE_API_KEY}"
 }
 
-#Airtable records
 def get_airtable_records(table_name):
     """Helper function to fetch records from Airtable table"""
     url = f"https://api.airtable.com/v0/{BASE_ID}/{table_name}"
@@ -24,8 +21,6 @@ def get_airtable_records(table_name):
     
     return response.json().get('records', [])
 
-
-#to get the product record from the purchase table
 def check_product_in_purchase(purchase_id: str):
     """Check if purchase ID exists and return the product record ID"""
     purchase_records = get_airtable_records(PURCHASE_TABLE_NAME)
@@ -37,8 +32,6 @@ def check_product_in_purchase(purchase_id: str):
 
     raise HTTPException(status_code=404, detail="Purchase ID not found")
 
-
-#get the return possibility from the product table based on the product record from the purchase table
 def get_product_details(product_record_id: str):
     """Fetch the product details using the internal Airtable record ID"""
     url = f"https://api.airtable.com/v0/{BASE_ID}/{PRODUCT_TABLE_NAME}/{product_record_id}"
@@ -50,17 +43,10 @@ def get_product_details(product_record_id: str):
     product_record = response.json().get('fields', {})
     return product_record.get('Product ID'), product_record.get('Return Possibility')
 
+# Example usage
+purchase_id = "PID20241"
+product_record_id = check_product_in_purchase(purchase_id)
 
-@app.get("/check-return/{purchase_id}")
-async def checkreturn(purchase_id: str):
-    product_record = check_product_in_purchase(purchase_id)
-    #print (product_record)
-    product_id, return_possibility = get_product_details(product_record)
-    #print (product_id)
-    #print(return_possibility)
-    #return {"for the product "+product_id+" the return possibility is " : return_possibility}
-    if product_id and return_possibility:
-        return {"for the product "+product_id+" the return possibility is " : return_possibility}
-    else:
-        return {"detail": "Product not found"}
-#uvicorn Fastapi:app --reload --port 8080
+# Now use the product_record_id to get the actual Product ID (e.g., PR21041)
+product_id, return_possibility = get_product_details(product_record_id)
+print(f"Product ID: {product_id}, Return Possibility: {return_possibility}")
